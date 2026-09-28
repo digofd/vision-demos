@@ -6,7 +6,11 @@ draws the returned keypoints back onto the clip. Pose estimation runs on
 through the [VLM Run Gateway](https://www.vlm.run/gateway), so there are no
 model weights to download.
 
-![Three dancers with pose overlays on the left and a sync-score panel on the right](readme_images/dance_demo_thumbnail.jpg)
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=Hmfwv0DwPeA"><img src="https://img.youtube.com/vi/Hmfwv0DwPeA/maxresdefault.jpg" width="600" alt="Three dancers with pose overlays on the left and a sync-score panel on the right. Click to watch on YouTube."></a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=Hmfwv0DwPeA">▶ Watch on YouTube</a>
+</p>
 
 ## Run it
 

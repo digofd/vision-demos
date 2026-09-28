@@ -22,7 +22,9 @@ Real-world computer vision demos.
 ### Dance Sync
 
 <p align="center">
-  <a href="dance_sync/"><img src="dance_sync/readme_images/dance_demo_thumbnail.jpg" width="600" alt="Dancers with pose overlays on the left and a sync score panel on the right"></a>
+  <a href="https://www.youtube.com/watch?v=Hmfwv0DwPeA"><img src="https://img.youtube.com/vi/Hmfwv0DwPeA/maxresdefault.jpg" width="600" alt="Dancers with pose overlays on the left and a sync score panel on the right. Click to watch on YouTube."></a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=Hmfwv0DwPeA">▶ Watch on YouTube</a>
 </p>
 
 ### Chin-Ups
