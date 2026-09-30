@@ -4,11 +4,12 @@ Real-world computer vision demos.
 
 | Project | What it does | Key model |
 |---|---|---|
-| **[dance_sync](dance_sync/)** | Compares dancers' sync performing the same choreography and computes a similarity metric. | [`vitpose-plus-large`](https://docs.vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
-| **[chin_ups](chin_ups/)** | Counts chin-up reps from a clip and times the ascent and descent of each one. | [`vitpose-plus-large`](https://docs.vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
-| **[rock_climbing](rock_climbing/)** | Segments bouldering holds, returns which holds the climber used and in what order, and compares attempts at the same route. | [`sam3.1`](https://docs.vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://docs.vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
-| **[rock_climbing_3d](rock_climbing_3d/)** | Reads the same route from a video recorded with depth (iPhone LiDAR), placing the wall, holds and climber in 3D and measuring the route in meters. | [`sam3.1`](https://docs.vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://docs.vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
-| **[running](running/)** | Measures a runner's cadence, times every foot strike, and averages the knee shape at contact. | [`vitpose-plus-large`](https://docs.vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[dance_sync](dance_sync/)** | Compares dancers' sync performing the same choreography and computes a similarity metric. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[chin_ups](chin_ups/)** | Counts chin-up reps from a clip and times the ascent and descent of each one. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[rock_climbing](rock_climbing/)** | Segments bouldering holds, returns which holds the climber used and in what order, and compares attempts at the same route. | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[rock_climbing_3d](rock_climbing_3d/)** | Reads the same route from a video recorded with depth (iPhone LiDAR), placing the wall, holds and climber in 3D and measuring the route in meters. | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[running](running/)** | Measures a runner's cadence, times every foot strike, and averages the knee shape at contact. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[deadlift](deadlift/)** | Counts deadlift reps and classifies each rep's back as straight or rounded, with the probability. | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) + [`gemma-4-26b-a4b-it`](https://vlm.run/gateway/models/google-gemma-4-26b-a4b-it) |
 
 
 ### Rock Climbing 3D
@@ -43,6 +44,12 @@ Real-world computer vision demos.
 
 <p align="center">
   <a href="running/"><img src="running/readme_images/running_demo_thumbnail.jpg" width="600" alt="A runner on a treadmill with a pose overlay on the left and a live cadence panel on the right"></a>
+</p>
+
+### Deadlift
+
+<p align="center">
+  <a href="deadlift/"><img src="deadlift/readme_images/deadlift_demo_thumbnail.jpg" width="600" alt="A deadlift at the end of a set with pose and plate overlays on the left, and on the right the live back verdict, bar height, P(rounded) over time and a verdict per rep"></a>
 </p>
 
 Each project has its own README with setup and instructions.
