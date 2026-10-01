@@ -11,7 +11,11 @@ probability live beside the video. Three models, one
 | The plate: bar height and reps | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) |
 | Back position, every frame | [`gemma-4-26b-a4b-it`](https://vlm.run/gateway/models/google-gemma-4-26b-a4b-it) via [TypeSafe System One](https://docs.typesafe.ai/concepts/system-one) |
 
-![The end of a four-rep set: pose and plate overlay on the left; on the right the live back verdict, bar height, P(rounded) over time and a row per rep, two straight and two rounded](readme_images/deadlift_demo_thumbnail.jpg)
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=917J5oOvcBM"><img src="https://img.youtube.com/vi/917J5oOvcBM/maxresdefault.jpg" width="600" alt="A four-rep deadlift set with pose and plate overlay on the left and the live back verdict, bar height and per-rep results on the right. Click to watch on YouTube."></a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=917J5oOvcBM">▶ Watch on YouTube</a>
+</p>
 
 ## Run it
 

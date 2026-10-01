@@ -49,7 +49,9 @@ Real-world computer vision demos.
 ### Deadlift
 
 <p align="center">
-  <a href="deadlift/"><img src="deadlift/readme_images/deadlift_demo_thumbnail.jpg" width="600" alt="A deadlift at the end of a set with pose and plate overlays on the left, and on the right the live back verdict, bar height, P(rounded) over time and a verdict per rep"></a>
+  <a href="https://www.youtube.com/watch?v=917J5oOvcBM"><img src="https://img.youtube.com/vi/917J5oOvcBM/maxresdefault.jpg" width="600" alt="A four-rep deadlift set with pose and plate overlay on the left and the live back verdict, bar height and per-rep results on the right. Click to watch on YouTube."></a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=917J5oOvcBM">▶ Watch on YouTube</a>
 </p>
 
 Each project has its own README with setup and instructions.
