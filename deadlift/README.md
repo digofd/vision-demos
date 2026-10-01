@@ -9,7 +9,7 @@ probability live beside the video. Three models, one
 |---|---|
 | Pose, hip angle, and the crop the back is read in | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
 | The plate: bar height and reps | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) |
-| Back position, every frame | [`gemma-4-26b-a4b-it`](https://vlm.run/gateway/models/google-gemma-4-26b-a4b-it) via [TypeSafe System One](https://docs.typesafe.ai/concepts/system-one) |
+| Back position, every frame | [`gemma-4-26b-a4b-it`](https://vlm.run/gateway/models/google-gemma-4-26b-a4b-it) |
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=917J5oOvcBM"><img src="https://img.youtube.com/vi/917J5oOvcBM/maxresdefault.jpg" width="600" alt="A four-rep deadlift set with pose and plate overlay on the left and the live back verdict, bar height and per-rep results on the right. Click to watch on YouTube."></a>
