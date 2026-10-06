@@ -71,6 +71,24 @@ FOOT_COLORS = {
 MEAN_COLOR = (235, 111, 31)     # #1f6fea, deep blue
 
 
+def credit_lines(cfg) -> list[tuple[str, str]]:
+    """The credit as ``[(label, value), ...]``, top line first. Empty for none.
+
+    Each ``CREDIT`` entry is a ``(label, value)`` pair or a plain string, as in
+    deadlift. Blank entries are skipped, so an unfilled handle leaves no gap.
+    """
+    lines = []
+    for entry in getattr(cfg, "CREDIT", None) or []:
+        if isinstance(entry, (tuple, list)):
+            label, value = (entry[0], entry[1]) if len(entry) >= 2 else ("", entry[0])
+        else:
+            label, value = "", entry
+        label, value = str(label or "").strip(), str(value or "").strip()
+        if value:
+            lines.append((label, value))
+    return lines
+
+
 class _Box:
     """A plot rectangle plus the data range it maps, in one place."""
 
@@ -160,8 +178,11 @@ class GaitPanel:
 
         # The credit line owns the bottom-right corner and is placed from the
         # panel edge, not from this block, so it never moves.
-        credit = (self._s(cfg.ATTRIBUTION_SIZE) + 2 * self._s(cfg.ATTRIBUTION_MARGIN)
-                  if cfg.ATTRIBUTION else self._s(14))
+        lines = credit_lines(cfg)
+        credit = (len(lines) * self._s(cfg.CREDIT_SIZE)
+                  + (len(lines) - 1) * self._s(cfg.CREDIT_LINE_GAP)
+                  + 2 * self._s(cfg.CREDIT_MARGIN)
+                  if lines else self._s(14))
 
         # Top and bottom air, reserved before the plots get their share. This
         # used to be a bare 8px floor: the block took every pixel left after the
@@ -614,12 +635,33 @@ class GaitPanel:
             textmod.draw(img, cfg.PANEL_ANKLE_HIP_LABEL, f, size=self.size_tick,
                          xy=(hx + self._s(6), box.py0), color=MUTED, anchor="lt")
 
-        if cfg.ATTRIBUTION:
-            textmod.draw(img, cfg.ATTRIBUTION, f, size=self._s(cfg.ATTRIBUTION_SIZE),
-                         xy=(self.w - self._s(cfg.ATTRIBUTION_MARGIN),
-                             self.h - self._s(cfg.ATTRIBUTION_MARGIN)),
-                         color=INK, anchor="rb", opacity=cfg.ATTRIBUTION_OPACITY)
+        self._credit(img)
         return img
+
+    def _credit(self, img) -> None:
+        """The credit stack in the bottom-right corner, last line on the margin.
+
+        Each line is ``LABEL: value``, right-aligned, the label a shade dimmer.
+        Lines are a fixed pitch apart, so a handle with a descender does not
+        push its line further from the one above.
+        """
+        cfg, f = self.cfg, self.font
+        size = self._s(cfg.CREDIT_SIZE)
+        right = self.w - self._s(cfg.CREDIT_MARGIN)
+        y = self.h - self._s(cfg.CREDIT_MARGIN)
+        for label, value in reversed(credit_lines(cfg)):
+            # y is the baseline; each part's ink bottom sits its descent below it.
+            textmod.draw(img, value, f, size=size,
+                         xy=(right, y + textmod.descent(value, f, size)),
+                         color=INK, anchor="rb", opacity=cfg.CREDIT_OPACITY)
+            if label:
+                vw = textmod.measure(value, f, size)[0]
+                tag = f"{label}:"
+                textmod.draw(img, tag, f, size=size,
+                             xy=(right - vw - self._s(cfg.CREDIT_SIZE * 0.3),
+                                 y + textmod.descent(tag, f, size)),
+                             color=INK, anchor="rb", opacity=cfg.CREDIT_LABEL_OPACITY)
+            y -= size + self._s(cfg.CREDIT_LINE_GAP)
 
     # ── per-frame content ────────────────────────────────────────────────────
     def _headline(self, img, frame: int) -> None:

@@ -99,6 +99,22 @@ def measure(text: str, font, size: int) -> tuple[int, int]:
     return patch.shape[1], patch.shape[0]
 
 
+def descent(text: str, font, size: int) -> int:
+    """How far *text*'s ink reaches below its baseline, in pixels.
+
+    ``draw`` anchors on the ink box, so two strings set side by side with
+    ``"rb"`` would bottom-align: "X:" would sink to the bottom of the "j" in
+    "@jeremyparkphd". Adding this to the baseline puts both on one line.
+    """
+    if font is None:
+        return 0
+    from PIL import Image, ImageDraw, ImageFont
+
+    face = ImageFont.truetype(font[0], size, index=font[1])
+    probe = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    return max(0, probe.textbbox((0, 0), text, font=face, anchor="ls")[3])
+
+
 def blend(img: np.ndarray, patch: np.ndarray, x: int, y: int, *,
           opacity: float = 1.0) -> np.ndarray:
     """Alpha-composite an RGBA patch onto a BGR frame, in place, clipped."""

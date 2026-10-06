@@ -2,10 +2,12 @@
 
     conda activate running
     python main.py
+    python main.py --height full --li "Your Name" --x @yourhandle
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -43,7 +45,50 @@ def rel(path: Path) -> Path:
     return path.relative_to(cfg.PROJECT_DIR)
 
 
-def main() -> int:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Every setting lives in config.py; these override a few per run.")
+
+    def height(text):
+        return "full" if text.lower() in ("full", "source") else int(text)
+
+    parser.add_argument("--height", type=height, metavar="PX|full",
+                        help=f"output video height in px, or 'full' for the source's own; "
+                             f"only ever scales down, and the model still sees "
+                             f"{cfg.INFERENCE_HEIGHT}px, so no new gateway call "
+                             f"(config: {cfg.EXPORT_HEIGHT})")
+    parser.add_argument("--trim", type=float, metavar="SECONDS",
+                        help="use only the first SECONDS of the clip, for a quick test")
+    credit = parser.add_argument_group(
+        "credit", "the lines in the corner; any of these replaces config.py's CREDIT")
+    credit.add_argument("--li", metavar="TEXT", help='LinkedIn, e.g. "Jeremy Park, PhD"')
+    credit.add_argument("--x", metavar="HANDLE", help="X handle, e.g. @jeremyparkphd")
+    credit.add_argument("--ig", metavar="HANDLE", help="Instagram handle")
+    credit.add_argument("--no-credit", action="store_true", help="no credit at all")
+    return parser.parse_args(argv)
+
+
+def apply_args(args: argparse.Namespace) -> None:
+    """Write the flags over the config, before anything reads it."""
+    if args.height:
+        cfg.EXPORT_HEIGHT = None if args.height == "full" else args.height
+    if args.trim:
+        cfg.TRIM_SECONDS = args.trim
+
+    def at(handle):
+        return handle if handle.startswith("@") else f"@{handle}"
+
+    handles = [(label, value) for label, value in
+               (("LI", args.li), ("X", args.x and at(args.x)),
+                ("IG", args.ig and at(args.ig))) if value]
+    if args.no_credit:
+        cfg.CREDIT = []
+    elif handles:
+        cfg.CREDIT = handles
+
+
+def main(argv: list[str] | None = None) -> int:
+    apply_args(parse_args(argv))
     t_start = time.perf_counter()
     console.print()
     console.rule("[bold]ViTPose: running[/]", align="center")
@@ -430,7 +475,7 @@ def main() -> int:
         "response": {"elapsed_seconds": round(elapsed, 2), "frames_returned": len(frames),
                      "frames_with_person": result.n_posed, "track_ids": result.track_ids,
                      "usage": usage},
-        "render": {**stats, "draw_face": cfg.DRAW_FACE},
+        "render": {**stats, "draw_face": cfg.DRAW_FACE, "credit": cfg.CREDIT},
         "metrics": metrics.as_dict(),
         "gait": {**analysis.summary(), "signal": gait.signal_config(cfg)}
                 if analysis else None,

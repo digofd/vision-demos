@@ -1,8 +1,8 @@
 """Params for the running pose run.
 
-Edit values here, then run `python main.py`. There are no command-line flags on
-purpose: `run.json` in each output directory snapshots these values, so a result
-can always be traced back to its settings.
+Edit values here, then run `python main.py`. A few per-run flags override them
+(`python main.py --help`): the output height and the credit, which change the
+render only.
 """
 
 from pathlib import Path
@@ -440,10 +440,16 @@ PANEL_BOTTOM_MARGIN = 34
 PANEL_FONT = "auto"        # "auto", "opencv" to force Hershey, or a font path
 PANEL_FONT_INDEX = None    # face index inside a .ttc; None uses the default
 
-ATTRIBUTION = "Jeremy Park"   # credit line, bottom-right of the panel; "" disables it
-ATTRIBUTION_SIZE = 22
-ATTRIBUTION_MARGIN = 22
-ATTRIBUTION_OPACITY = 0.9     # 0-1; white, dialled back so it reads as a credit
+# Credit lines, bottom-right of the panel: ("LABEL", "value") or a plain string.
+#   CREDIT = ["Jeremy Park"]
+#   CREDIT = [("LI", "Jeremy Park, PhD"), ("X", "@jeremyparkphd")]
+# Ships blank; fill it in or pass --li, --x, --ig per run.
+CREDIT = []
+CREDIT_SIZE = 22               # px at a 720px-wide reference; scales with the output
+CREDIT_LINE_GAP = 6            # px between credit lines
+CREDIT_MARGIN = 22             # inset from the right and bottom edges
+CREDIT_OPACITY = 0.9           # 0-1; white, dialled back so it reads as a credit
+CREDIT_LABEL_OPACITY = 0.5     # the "LI:" / "X:" part, a shade dimmer
 
 # ── Output ───────────────────────────────────────────────────────────────────
 OUTPUT_DIR = DATA_DIR / "output"

@@ -1,6 +1,8 @@
 """Params for the chin-ups pose run.
 
-Edit values here, then run `python main.py`.
+Edit values here, then run `python main.py`. A few per-run flags override them
+(`python main.py --help`): the output height and the credit, which change the
+render only.
 """
 
 from pathlib import Path
@@ -91,10 +93,16 @@ PANEL_Y_LABEL = "Duration (s)"
 PANEL_FONT = "auto"        # "auto", "opencv" to force Hershey, or a font path
 PANEL_FONT_INDEX = None    # face index inside a .ttc; None uses the default
 
-ATTRIBUTION = "Jeremy Park"   # credit line, bottom-right of the export; "" disables it
-ATTRIBUTION_SIZE = 20
-ATTRIBUTION_MARGIN = 25
-ATTRIBUTION_OPACITY = 0.75    # 0-1; white, dialled back so it reads as a credit
+# Credit lines, bottom-right of the export: ("LABEL", "value") or a plain string.
+#   CREDIT = ["Jeremy Park"]
+#   CREDIT = [("LI", "Jeremy Park, PhD"), ("X", "@jeremyparkphd")]
+# Ships blank; fill it in or pass --li, --x, --ig per run.
+CREDIT = []
+CREDIT_SIZE = 20               # px at a 720px-wide reference; scales with the output
+CREDIT_LINE_GAP = 6            # px between credit lines
+CREDIT_MARGIN = 25             # inset from the right and bottom edges
+CREDIT_OPACITY = 0.75          # 0-1; white, dialled back so it reads as a credit
+CREDIT_LABEL_OPACITY = 0.41    # the "LI:" / "X:" part, a shade dimmer
 
 # ── Output ───────────────────────────────────────────────────────────────────
 OUTPUT_DIR = DATA_DIR / "output"

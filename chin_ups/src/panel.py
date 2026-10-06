@@ -252,27 +252,55 @@ def _draw_lines(img, lines, font, *, px: int, x: int, gap: float = 0.40):
     return img
 
 
-def _draw_attribution(panel, font, *, text: str, size: int, margin: int, opacity: float):
-    """Credit line, tucked into the bottom-right corner of the export.
+def credit_lines(cfg) -> list[tuple[str, str]]:
+    """The credit as ``[(label, value), ...]``, top line first. Empty for none.
 
-    Positioned by the text's *ink* box rather than the font's line box, so the
-    gap on the right equals the gap underneath. A line box carries the font's
-    own ascent and descent padding, which differs from the glyphs drawn.
+    Each ``CREDIT`` entry is a ``(label, value)`` pair or a plain string, as in
+    deadlift. Blank entries are skipped, so an unfilled handle leaves no gap.
+    """
+    lines = []
+    for entry in getattr(cfg, "CREDIT", None) or []:
+        if isinstance(entry, (tuple, list)):
+            label, value = (entry[0], entry[1]) if len(entry) >= 2 else ("", entry[0])
+        else:
+            label, value = "", entry
+        label, value = str(label or "").strip(), str(value or "").strip()
+        if value:
+            lines.append((label, value))
+    return lines
+
+
+def _draw_credit(panel, font, *, cfg):
+    """The credit stack, tucked into the bottom-right corner of the export.
+
+    Each line is ``LABEL: value``, right-aligned, the label a shade dimmer. The
+    last line's ink sits on the margin, so the gap on the right equals the gap
+    underneath; the label shares the value's baseline, and the stack grows up.
     """
     import cv2
 
-    if not text:
+    lines = credit_lines(cfg)
+    if not lines:
         return panel
 
     h, w = panel.shape[:2]
-    px = max(9, int(size * w / 720))
-    pad = max(6, int(margin * w / 720))
-    level = int(255 * max(0.0, min(1.0, opacity)))
+    px = max(9, int(cfg.CREDIT_SIZE * w / 720))
+    pad = max(6, int(cfg.CREDIT_MARGIN * w / 720))
+    gap = int(cfg.CREDIT_LINE_GAP * w / 720)
+
+    def level(opacity):
+        return int(255 * max(0.0, min(1.0, opacity)))
+
+    value_a, label_a = level(cfg.CREDIT_OPACITY), level(cfg.CREDIT_LABEL_OPACITY)
 
     if font is None:
-        (tw, th), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, px / 34, 1)
-        cv2.putText(panel, text, (w - pad - tw, h - pad), cv2.FONT_HERSHEY_SIMPLEX,
-                    px / 34, (level, level, level), 1, cv2.LINE_AA)
+        y = h - pad
+        for label, value in reversed(lines):
+            text = f"{label}: {value}" if label else value
+            (tw, th), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, px / 34, 1)
+            cv2.putText(panel, text, (w - pad - tw, y), cv2.FONT_HERSHEY_SIMPLEX,
+                        px / 34, (value_a,) * 3, 1, cv2.LINE_AA)
+            y -= th + gap
         return panel
 
     from PIL import Image, ImageDraw, ImageFont
@@ -282,9 +310,18 @@ def _draw_attribution(panel, font, *, text: str, size: int, margin: int, opacity
     draw = ImageDraw.Draw(layer)
     face = ImageFont.truetype(font[0], px, index=font[1])
 
-    left, top, right, bottom = draw.textbbox((0, 0), text, font=face)
-    draw.text((w - pad - right, h - pad - bottom), text, font=face,
-              fill=(255, 255, 255, level))
+    right = w - pad
+    # Baseline of the last line, raised by its descent so its ink meets the margin.
+    last = lines[-1]
+    y = h - pad - max(draw.textbbox((0, 0), f"{last[0]}: {last[1]}" if last[0] else last[1],
+                                    font=face, anchor="ls")[3], 0)
+    for label, value in reversed(lines):
+        draw.text((right, y), value, font=face, fill=(255, 255, 255, value_a), anchor="rs")
+        if label:
+            vw = draw.textlength(value, font=face)
+            draw.text((right - vw, y), f"{label}: ", font=face,
+                      fill=(255, 255, 255, label_a), anchor="rs")
+        y -= px + gap
 
     panel[:] = np.array(Image.alpha_composite(base, layer).convert("RGB"))[..., ::-1]
     return panel
@@ -335,8 +372,6 @@ def build_panels(analysis, width: int, height: int, *, cfg) -> list:
                         px=int(cfg.PANEL_NOTE_SIZE * width / 720), x=left,
                         gap=cfg.PANEL_NOTE_LINE_GAP)
 
-        _draw_attribution(panel, font, text=cfg.ATTRIBUTION,
-                          size=cfg.ATTRIBUTION_SIZE, margin=cfg.ATTRIBUTION_MARGIN,
-                          opacity=cfg.ATTRIBUTION_OPACITY)
+        _draw_credit(panel, font, cfg=cfg)
         panels.append(panel)
     return panels

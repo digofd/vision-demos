@@ -36,8 +36,20 @@ For how a rep is found and timed, see
 5. **Run it** from this directory:
 
    ```bash
-   python main.py
+   python main.py                                   # as config.py has it
+   python main.py --li "Your Name" --x @yourhandle  # with your credit in the corner
+   python main.py --height full                     # export at the source resolution
    ```
+
+   A few flags override their [`config.py`](config.py) value for that run only:
+
+   | flag | what it sets |
+   |---|---|
+   | `--height 1080` | output video height in px, or `full`; the model still sees `INFERENCE_HEIGHT`, so no new call (`EXPORT_HEIGHT`) |
+   | `--trim 5` | only the first 5 s of the clip, for a quick test (`TRIM_SECONDS`) |
+   | `--li` `--x` `--ig` / `--no-credit` | the credit in the corner (`CREDIT`) |
+
+   `python main.py -h` lists them. Everything else stays in `config.py`.
 
 ## Output
 

@@ -6,6 +6,7 @@ Real-world computer vision demos.
 |---|---|---|
 | **[dance_sync](dance_sync/)** | Compares dancers' sync performing the same choreography and computes a similarity metric. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
 | **[chin_ups](chin_ups/)** | Counts chin-up reps from a clip and times the ascent and descent of each one. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
+| **[pull_ups](pull_ups/)** | Counts pull-up reps, times each pull, and grades each rep's range of motion as full or partial against the athlete's own calibrated dead hang. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
 | **[rock_climbing](rock_climbing/)** | Segments bouldering holds, returns which holds the climber used and in what order, and compares attempts at the same route. | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
 | **[rock_climbing_3d](rock_climbing_3d/)** | Reads the same route from a video recorded with depth (iPhone LiDAR), placing the wall, holds and climber in 3D and measuring the route in meters. | [`sam3.1`](https://vlm.run/gateway/models/facebook-sam3.1) + [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
 | **[running](running/)** | Measures a runner's cadence, times every foot strike, and averages the knee shape at contact. | [`vitpose-plus-large`](https://vlm.run/gateway/models/usyd-community-vitpose-plus-large) |
@@ -32,6 +33,12 @@ Real-world computer vision demos.
 
 <p align="center">
   <a href="chin_ups/"><img src="chin_ups/readme_images/chin_ups_demo_thumbnail.jpg" width="600" alt="A chin-up at the top of the rep with a pose overlay on the left and a rep-timing panel on the right"></a>
+</p>
+
+### Pull-Ups
+
+<p align="center">
+  <a href="pull_ups/"><img src="pull_ups/readme_images/pull_ups_demo_thumbnail.jpg" width="600" alt="A six-rep pull-up set with a pose overlay on the left and, on the right, vertical displacement over time against the dead hang and the bar, and each rep graded full or partial"></a>
 </p>
 
 ### Rock Climbing
