@@ -1,8 +1,9 @@
 """All knobs for the dance pose run.
 
-Edit values here, then `python main.py`. There are no command-line flags on
-purpose: `run.json` in each output directory snapshots these values, so a result
-can always be traced back to its settings.
+Edit values here, then `python main.py`. The only command-line flags set the
+credit in the corner, which changes no result: `run.json` in each output
+directory snapshots these values, so a result can always be traced back to its
+settings.
 """
 
 from pathlib import Path
@@ -429,10 +430,20 @@ PANEL_FONT_INDEX = None      # face index inside a .ttc; None uses the default
 
 # The content block is centred vertically, then lifted this fraction of the
 # panel height. Geometric centring reads low because the block is top-heavy and
-# the attribution anchors the bottom corner. 0 for exact centre.
+# the credit anchors the bottom corner. 0 for exact centre.
 PANEL_BLOCK_LIFT = 0.03
 
-ATTRIBUTION = "Jeremy Park"   # bottom-right of the panel; "" disables it
+# Credit lines, bottom-right of the panel: ("LABEL", "value") or a plain string.
+#   CREDIT = ["Jeremy Park"]
+#   CREDIT = [("LI", "Jeremy Park, PhD"), ("X", "@jeremyparkphd")]
+# Ships blank; fill it in or pass --li, --x, --ig per run.
+CREDIT = []
+CREDIT_SIZE = 22               # px at a 720px-wide reference; scales with the output
+CREDIT_LINE_GAP = 6            # px between credit lines
+CREDIT_MARGIN_X = 22           # inset from the right edge
+CREDIT_MARGIN_Y = 18           # inset from the bottom edge
+CREDIT_OPACITY = 0.9           # 0-1; white, dialled back so it reads as a credit
+CREDIT_LABEL_OPACITY = 0.5     # the "LI:" / "X:" part, a shade dimmer
 
 # ── Output ───────────────────────────────────────────────────────────────────
 OUTPUT_DIR = DATA_DIR / "output"

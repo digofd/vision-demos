@@ -18,6 +18,7 @@ analyzed first, because no clip can be rendered until all of them are known.
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import sys
@@ -1389,7 +1390,34 @@ def to_render(runs: list[Run], console) -> list[tuple[int, Run]]:
     return chosen
 
 
-def main() -> int:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Every setting lives in config.py; these override the credit per run.")
+    credit = parser.add_argument_group(
+        "credit", "the lines in the corner; any of these replaces config.py's CREDIT")
+    credit.add_argument("--li", metavar="TEXT", help='LinkedIn, e.g. "Jeremy Park, PhD"')
+    credit.add_argument("--x", metavar="HANDLE", help="X handle, e.g. @jeremyparkphd")
+    credit.add_argument("--ig", metavar="HANDLE", help="Instagram handle")
+    credit.add_argument("--no-credit", action="store_true", help="no credit at all")
+    return parser.parse_args(argv)
+
+
+def apply_args(args: argparse.Namespace) -> None:
+    """Write the flags over the config, before anything reads it."""
+    def at(handle):
+        return handle if handle.startswith("@") else f"@{handle}"
+
+    handles = [(label, value) for label, value in
+               (("LI", args.li), ("X", args.x and at(args.x)),
+                ("IG", args.ig and at(args.ig))) if value]
+    if args.no_credit:
+        cfg.CREDIT = []
+    elif handles:
+        cfg.CREDIT = handles
+
+
+def main(argv: list[str] | None = None) -> int:
+    apply_args(parse_args(argv))
     t_start = time.perf_counter()
     console.print()
     console.rule("[bold]SAM 3.1 + ViTPose: rock climbing[/]", align="center")

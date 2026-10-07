@@ -132,7 +132,9 @@ def _axes_image(width: int, height: int, *, duration: float, ylim, yticks, yfmt,
         spine.set_color(GRID)
 
     # The right edge meets the panel margin, so the axes end where the text does.
-    fig.subplots_adjust(left=0.17, right=1 - margin / width, top=0.90, bottom=0.13)
+    # Wider on the left when there's a y label beside the tick labels.
+    fig.subplots_adjust(left=0.22 if ylabel else 0.17, right=1 - margin / width,
+                        top=0.90, bottom=0.13)
     fig.canvas.draw()
 
     renderer = fig.canvas.get_renderer()
@@ -297,23 +299,25 @@ class Panel:
         base[:] = _bgr(BG)
 
         # Head above hands, in torso lengths: the quantity the top is graded on, so
-        # "clears bar" is the real cutoff. The y-axis shows only the two meaningful
-        # heights (dead hang, clears bar) instead of numbers; headroom holds rep labels.
+        # "clears bar" is the real cutoff. The y-axis marks only the two meaningful
+        # heights (dead hang, clears bar), by name: torso lengths aren't a unit anyone
+        # reads. Headroom holds rep labels.
         self.height = shown(analysis.clearance)
         seen = self.height[np.isfinite(self.height)]
         hang = float(np.percentile(seen, cfg.BASELINE_PERCENTILE)) if len(seen) else 0.0
-        bar = analysis.clearance_required
+        clears = analysis.clearance_required
         top = max(float(seen.max()) if len(seen) else hang + 0.1,
-                  bar if np.isfinite(bar) else hang)
+                  clears if np.isfinite(clears) else hang)
         bottom = min(float(seen.min()) if len(seen) else hang, hang)
         span = max(top - bottom, 1e-3)
-        marks = {hang: "dead hang"} | ({bar: "clears bar"} if np.isfinite(bar) else {})
+        marks = {hang: "dead hang"} | ({clears: "clears bar"} if np.isfinite(clears) else {})
         self.strip = _Strip(
             base, int(height * 0.135), int(height * 0.44), n_frames,
             ylim=(bottom - span * 0.08, top + span * 0.22), yticks=sorted(marks),
             yfmt=lambda v, _: min(marks.items(), key=lambda m: abs(m[0] - v))[1],
-            duration=n_frames / fps, title="Vertical displacement", xlabel="Time (s)", ylabel="",
-            hlines=sorted(marks), scale=s, font=self.font, margin=self.margin)
+            duration=n_frames / fps, title="Vertical displacement", xlabel="Time (s)",
+            ylabel="Head height", hlines=sorted(marks), scale=s, font=self.font,
+            margin=self.margin)
         self.height_py = self.strip.y_of(self.height)
 
         # Column centers for REP | ROM | BOTTOM | TOP | PULL, shared by heading and rows.

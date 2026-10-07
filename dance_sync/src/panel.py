@@ -104,6 +104,24 @@ def _segments(values: np.ndarray) -> list[list[int]]:
     return runs
 
 
+def credit_lines(cfg) -> list[tuple[str, str]]:
+    """The credit as ``[(label, value), ...]``, top line first. Empty for none.
+
+    Each ``CREDIT`` entry is a ``(label, value)`` pair or a plain string; blank
+    entries are skipped.
+    """
+    lines = []
+    for entry in getattr(cfg, "CREDIT", None) or []:
+        if isinstance(entry, (tuple, list)):
+            label, value = (entry[0], entry[1]) if len(entry) >= 2 else ("", entry[0])
+        else:
+            label, value = "", entry
+        label, value = str(label or "").strip(), str(value or "").strip()
+        if value:
+            lines.append((label, value))
+    return lines
+
+
 class SimilarityPanel:
     """Draws the panel for a given frame. One instance per render."""
 
@@ -189,7 +207,7 @@ class SimilarityPanel:
 
         # ...then lifted slightly above true centre. Geometric centre reads low
         # here for two reasons: the block's own weight is top-heavy (a bold word
-        # against a mostly empty plot), and the attribution anchors the bottom
+        # against a mostly empty plot), and the credit anchors the bottom
         # corner. Optical centring is the standard fix and PANEL_BLOCK_LIFT is
         # the knob — 0 for true geometric centre.
         lift = int(self.cfg.PANEL_BLOCK_LIFT * height)
@@ -503,11 +521,35 @@ class SimilarityPanel:
                      xy=(self.w // 2, self.py1 + self.y_label_dx),
                      color=DIM, anchor="cm")
 
-        if self.cfg.ATTRIBUTION:
-            textmod.draw(img, self.cfg.ATTRIBUTION, f, size=self._s(22),
-                         xy=(self.w - self._s(22), self.h - self._s(18)),
-                         color=INK, anchor="rb", opacity=0.9)
+        self._credit(img)
         return img
+
+    def _credit(self, img) -> None:
+        """The credit stack, bottom-right; the last line's ink sits on the margin.
+
+        Each part is placed from a shared baseline, so "X:" and "@handle" line up.
+        """
+        cfg, f = self.cfg, self.font
+        lines = credit_lines(cfg)
+        if not lines:
+            return
+        size = self._s(cfg.CREDIT_SIZE)
+        right = self.w - self._s(cfg.CREDIT_MARGIN_X)
+        label, value = lines[-1]
+        y = self.h - self._s(cfg.CREDIT_MARGIN_Y) - max(
+            textmod.descent(value, f, size), textmod.descent(f"{label}:", f, size) if label else 0)
+        for label, value in reversed(lines):
+            textmod.draw(img, value, f, size=size,
+                         xy=(right, y + textmod.descent(value, f, size)),
+                         color=INK, anchor="rb", opacity=cfg.CREDIT_OPACITY)
+            if label:
+                vw = textmod.measure(value, f, size)[0]
+                tag = f"{label}:"
+                textmod.draw(img, tag, f, size=size,
+                             xy=(right - vw - self._s(cfg.CREDIT_SIZE * 0.3),
+                                 y + textmod.descent(tag, f, size)),
+                             color=INK, anchor="rb", opacity=cfg.CREDIT_LABEL_OPACITY)
+            y -= size + self._s(cfg.CREDIT_LINE_GAP)
 
     # ── per-frame ────────────────────────────────────────────────────────────
     def draw(self, frame_index: int) -> np.ndarray:

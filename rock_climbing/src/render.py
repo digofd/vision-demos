@@ -35,6 +35,72 @@ def _px(base: float, scale: float) -> int:
     return max(1, int(round(base * scale)))
 
 
+def credit_lines(cfg) -> list[tuple[str, str]]:
+    """The credit as ``[(label, value), ...]``, top line first. Empty for none.
+
+    Each ``CREDIT`` entry is a ``(label, value)`` pair or a plain string; blank
+    entries are skipped.
+    """
+    entries = getattr(cfg, "CREDIT", None) or []
+    if isinstance(entries, (str, tuple)):
+        entries = [entries]
+    lines = []
+    for entry in entries:
+        if isinstance(entry, (tuple, list)):
+            label, value = (entry[0], entry[1]) if len(entry) >= 2 else ("", entry[0])
+        else:
+            label, value = "", entry
+        label, value = str(label or "").strip(), str(value or "").strip()
+        if value:
+            lines.append((label, value))
+    return lines
+
+
+def _credit_parts(label: str, value: str) -> tuple[str, str]:
+    return (f"{label}: " if label else "", value)
+
+
+def measure_credit(cfg, font, scale: float) -> tuple[int, int]:
+    """``(width, height)`` of the whole credit stack, in pixels."""
+    size = _px(cfg.CREDIT_SIZE, scale)
+    lines = credit_lines(cfg)
+    if not lines:
+        return 0, 0
+    widths = [text_mod.measure(a + b, font, size)[0]
+              for a, b in (_credit_parts(*line) for line in lines)]
+    gap = _px(getattr(cfg, "CREDIT_LINE_GAP", 5), scale)
+    return max(widths), len(lines) * size + (len(lines) - 1) * gap
+
+
+def draw_credit(img, cfg, font, scale: float, *, right: int, bottom: int) -> int:
+    """Draw the credit right-aligned with its last line on *bottom*.
+
+    Returns the y the next thing up (the clock) should sit on: the top of the
+    stack less the usual gap, or *bottom* unchanged when there is no credit.
+    """
+    lines = credit_lines(cfg)
+    if not lines:
+        return bottom
+    size = _px(cfg.CREDIT_SIZE, scale)
+    gap = _px(getattr(cfg, "CREDIT_LINE_GAP", 5), scale)
+    label_colour = getattr(cfg, "CREDIT_LABEL_COLOR", cfg.CREDIT_COLOR)
+    y = bottom
+    for label, value in reversed(lines):
+        prefix, text = _credit_parts(label, value)
+        # Both parts placed from one ascender line, so they share a baseline;
+        # the line as a whole sits with its lowest ink on *y*.
+        parts = [(text, cfg.CREDIT_COLOR)] + ([(prefix, label_colour)] if prefix else [])
+        boxes = [text_mod.ink_box(s, font, size) for s, _ in parts]
+        ascender = y - max(b[3] for b in boxes)
+        x = right
+        for (s, colour), (l, t, r_, b) in zip(parts, boxes):
+            text_mod.draw(img, s, font, size=size, xy=(x, ascender + t), color=colour,
+                          anchor="rt")
+            x -= r_ - l + (1 if s == text else 0)
+        y -= size + gap
+    return y + gap - _px(cfg.TIMER_CREDIT_GAP, scale)
+
+
 def _polygon_px(hold: dict, width: int, height: int):
     polygon = hold.get("polygon")
     if not polygon or len(polygon) < 3:
@@ -712,7 +778,6 @@ def render(info, holds, poses, analysis, route_points, out_path: Path, *,
     outline_thick = _px(cfg.HOLD_OUTLINE_THICK, scale)
     dot_radius = _px(cfg.MIDLINE_DOT_RADIUS, scale)
     margin = _px(cfg.PANEL_MARGIN, scale)
-    gap = _px(cfg.TIMER_CREDIT_GAP, scale)
     label_size = _px(cfg.HOLD_LABEL_SIZE, scale)
 
     pip_radius = _px(cfg.LIMB_PIP_RADIUS, scale)
@@ -745,11 +810,10 @@ def render(info, holds, poses, analysis, route_points, out_path: Path, *,
     # Widest the bottom-right stack will ever get: the finished clock and the
     # credit. Measured once so the sequence column can steer clear of both.
     corner_reserve = 0
-    if cfg.TIMER or cfg.CREDIT_TEXT:
+    if cfg.TIMER or credit_lines(cfg):
         widths = [text_mod.measure("00:00 s", font, _px(cfg.TIMER_SIZE, scale))[0]]
-        if cfg.CREDIT_TEXT:
-            widths.append(text_mod.measure(cfg.CREDIT_TEXT, font,
-                                           _px(cfg.CREDIT_SIZE, scale))[0])
+        if credit_lines(cfg):
+            widths.append(measure_credit(cfg, font, scale)[0])
         corner_reserve = max(widths) + margin + _px(16, scale)
 
     # The completion panel, and the tail that makes it readable. The clock stops
@@ -953,13 +1017,8 @@ def render(info, holds, poses, analysis, route_points, out_path: Path, *,
                                 right_reserve=corner_reserve)
 
             # Bottom-right: the clock over the credit.
-            bottom = height - margin
-            if cfg.CREDIT_TEXT:
-                size = _px(cfg.CREDIT_SIZE, scale)
-                text_mod.draw(right, cfg.CREDIT_TEXT, font, size=size,
-                              xy=(width - margin, bottom), color=cfg.CREDIT_COLOR,
-                              anchor="rb")
-                bottom -= size + gap
+            bottom = draw_credit(right, cfg, font, scale, right=width - margin,
+                                 bottom=height - margin)
 
             if cfg.TIMER and analysis.start_frame is not None \
                     and frame_index >= analysis.start_frame:

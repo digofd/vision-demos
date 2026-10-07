@@ -107,6 +107,7 @@ repo, and describe how you want to update the project.**
 
    ```bash
    python main.py
+   python main.py --li "Your Name" --x @yourhandle  # with your credit in the corner
    ```
 
 4. View the rendered output in the latest timestamped folder under

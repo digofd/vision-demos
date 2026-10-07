@@ -125,6 +125,25 @@ def measure(text: str, font, size: int) -> tuple[int, int]:
     return patch.shape[1], patch.shape[0]
 
 
+@lru_cache(maxsize=1024)
+def ink_box(text: str, font, size: int) -> tuple[int, int, int, int]:
+    """``(left, top, right, bottom)`` of *text*'s ink, relative to the font's
+    ascender line — the same for every string in one face and size, so two
+    strings placed by it share a baseline. `draw` anchors on the ink box
+    alone, which is right for centring one string and wrong for setting two
+    side by side: "X:" and "@jeremyparkphd" would bottom-align, and the
+    descenders in the second would lift it above the first.
+    """
+    if font is None:
+        w, h = measure(text, None, size)
+        return 0, 0, w, h
+    from PIL import Image, ImageDraw, ImageFont
+
+    face = ImageFont.truetype(font[0], size, index=font[1])
+    probe = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    return tuple(int(v) for v in probe.textbbox((0, 0), text, font=face))
+
+
 def blend(img: np.ndarray, patch: np.ndarray, x: int, y: int, *,
           opacity: float = 1.0) -> np.ndarray:
     """Alpha-composite an RGBA patch onto a BGR frame, in place, clipped."""

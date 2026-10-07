@@ -50,7 +50,8 @@ In theory, it should work with other depth sensors (e.g. a RealSense).
 
 3. Put your capture folders in `data/input/current/`.
 4. Set `HOLD_COLOR` in [`config.py`](config.py) to match your route.
-5. Run `python main.py`.
+5. Run `python main.py`. Add `--li "Your Name" --x @yourhandle` to put your
+   credit in the corner.
 6. The output is in the newest folder under `data/output/`. The video ends in
    `_climb.mp4`.
 

@@ -37,6 +37,7 @@ model weights to download.
 
    ```bash
    python main.py
+   python main.py --li "Your Name" --x @yourhandle  # with your credit in the corner
    ```
 
 The overlay video, the similarity plots and a `report.txt` land in a

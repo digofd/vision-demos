@@ -569,24 +569,13 @@ TIMER = True
 TIMER_SIZE = 26
 TIMER_COLOR = (255, 255, 255)
 
-# The credit, under the clock: one entry per line, top to bottom. Each entry is
-# either ("LABEL", "value") — drawn as "LABEL: value", the label a shade dimmer —
-# or a plain string, drawn as it is. Any mix, any number of lines:
-#
-#   CREDIT = ["Jeremy Park"]                        # a name alone
-#   CREDIT = [("X", "@jeremyparkphd")]              # a handle alone
-#   CREDIT = ["Jeremy Park", ("IG", "@jpclimbs")]   # a name, then a handle
-#   CREDIT = []                                     # no credit at all
-#
-# Ships blank. To add your own, fill it in — mine, for example:
-#
-#   CREDIT = [
-#       ("LI", "Jeremy Park, PhD"),
-#       ("X", "@jeremyparkphd"),
-#   ]
+# Credit lines, under the clock: ("LABEL", "value") or a plain string.
+#   CREDIT = ["Jeremy Park"]
+#   CREDIT = [("LI", "Jeremy Park, PhD"), ("X", "@jeremyparkphd")]
+# Ships blank; fill it in or pass --li, --x, --ig per run.
 CREDIT = []
 CREDIT_SIZE = 17                   # per line; the stack grows upward from the corner
-CREDIT_LINE_GAP = 5
+CREDIT_LINE_GAP = 5                # px between credit lines
 CREDIT_COLOR = (180, 180, 180)
 CREDIT_LABEL_COLOR = (120, 120, 120)   # the "LI:" / "X:" part
 

@@ -55,9 +55,9 @@ deep holds every other rep to a higher bar.
 
 - **Header:** reps, average pull (full reps only), full-ROM tally, live elbow
   angle.
-- **Graph:** the head above the hands over time. The "clears bar" line is the
-  top cutoff itself, so each peak lands on the same side as its grade. Dots mark
-  each rep's bottom and top, green or red.
+- **Graph:** head height over time. The "clears bar" line is the top cutoff
+  itself, so each peak lands on the same side as its grade. Dots mark each rep's
+  bottom and top, green or red.
 - **Table:** grade, bottom and top elbow angle, pull time. A red number is the
   end that fell short; a partial rep has no pull time.
 

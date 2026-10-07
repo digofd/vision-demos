@@ -677,9 +677,15 @@ TIMER = True
 TIMER_SIZE = 26
 TIMER_COLOR = (255, 255, 255)
 
-CREDIT_TEXT = "Jeremy Park"           # drawn under the clock; None omits it
-CREDIT_SIZE = 21
+# Credit lines, under the clock: ("LABEL", "value") or a plain string.
+#   CREDIT = ["Jeremy Park"]
+#   CREDIT = [("LI", "Jeremy Park, PhD"), ("X", "@jeremyparkphd")]
+# Ships blank; fill it in or pass --li, --x, --ig per run.
+CREDIT = []
+CREDIT_SIZE = 21                      # per line; the stack grows upward from the corner
+CREDIT_LINE_GAP = 5                   # px between credit lines
 CREDIT_COLOR = (180, 180, 180)
+CREDIT_LABEL_COLOR = (120, 120, 120)  # the "LI:" / "X:" part
 
 PANEL_MARGIN = 18            # inset from the right and bottom edges
 TIMER_CREDIT_GAP = 14
