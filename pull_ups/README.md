@@ -8,7 +8,9 @@ through the [VLM Run Gateway](https://www.vlm.run/gateway), so there are no
 weights to download. How it works: [how-it-works.md](how-it-works.md).
 
 <p align="center">
-  <img src="readme_images/pull_ups_demo_thumbnail.jpg" width="600" alt="A six-rep pull-up set with a pose overlay on the left; on the right the rep count, 3 of 6 full range of motion, vertical displacement over time against the dead hang and the bar, and each rep's grade, bottom and top elbow angle, and pull time">
+  <a href="https://www.youtube.com/watch?v=yAoVkH60Exw"><img src="https://img.youtube.com/vi/yAoVkH60Exw/maxresdefault.jpg" width="600" alt="A six-rep pull-up set with a pose overlay on the left; on the right the rep count, 3 of 6 full range of motion, vertical displacement over time against the dead hang and the bar, and each rep's grade, bottom and top elbow angle, and pull time. Click to watch on YouTube."></a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=yAoVkH60Exw">▶ Watch on YouTube</a>
 </p>
 
 ## Run it

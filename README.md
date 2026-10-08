@@ -38,7 +38,9 @@ Real-world computer vision demos.
 ### Pull-Ups
 
 <p align="center">
-  <a href="pull_ups/"><img src="pull_ups/readme_images/pull_ups_demo_thumbnail.jpg" width="600" alt="A six-rep pull-up set with a pose overlay on the left and, on the right, vertical displacement over time against the dead hang and the bar, and each rep graded full or partial"></a>
+  <a href="https://www.youtube.com/watch?v=yAoVkH60Exw"><img src="https://img.youtube.com/vi/yAoVkH60Exw/maxresdefault.jpg" width="600" alt="A six-rep pull-up set with a pose overlay on the left and, on the right, vertical displacement over time against the dead hang and the bar, and each rep graded full or partial. Click to watch on YouTube."></a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=yAoVkH60Exw">▶ Watch on YouTube</a>
 </p>
 
 ### Rock Climbing
