@@ -15,6 +15,8 @@ The output is a 1080×1080 square (`EXPORT_SQUARE` in [`config.py`](config.py)).
 The panel has the live tallies, vertical displacement and the body line over
 time, and a dot per rep for the push-up time (the concentric).
 
+![A push-up set with a pose overlay on top and a live panel below: the rep count, 24 of 24 full range, 22 of 24 straight back, vertical displacement, the body line, and the push-up time per rep](readme_images/push_ups_demo_thumbnail.jpg)
+
 ## Run it
 
 1. **Get an API key** at [app.vlm.run/sign-in](https://app.vlm.run/sign-in).

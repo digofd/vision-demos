@@ -44,6 +44,12 @@ Real-world computer vision demos.
   <a href="https://www.youtube.com/watch?v=yAoVkH60Exw">▶ Watch on YouTube</a>
 </p>
 
+### Push-Ups
+
+<p align="center">
+  <a href="push_ups/"><img src="push_ups/readme_images/push_ups_demo_thumbnail.jpg" width="600" alt="A push-up set with a pose overlay on top and a live panel below: the rep count, 24 of 24 full range, 22 of 24 straight back, vertical displacement, the body line, and the push-up time per rep"></a>
+</p>
+
 ### Rock Climbing
 
 <p align="center">
