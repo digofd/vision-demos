@@ -75,7 +75,8 @@ One timestamped directory per clip under `data/output/`:
 ```
 20261006-000912/
 ├── <clip>_pull_ups.mp4   # overlay + live panel
-├── timeline.png          # displacement, elbow angle and head clearance, every rep marked
+├── plots.png             # displacement, elbow angle and head clearance, every rep marked,
+│                         # and a box plot of the concentric time of every full rep
 ├── reps.json             # per-rep timings and grades, plus every per-frame series
 ├── summary.txt           # the rep report
 └── run.json              # config, calibration, provenance, cost

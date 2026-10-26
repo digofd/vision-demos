@@ -33,7 +33,7 @@ In theory, it should work with other depth sensors (e.g. a RealSense).
 ## Run it
 
 1. Get an API key at [VLM Run](https://app.vlm.run/sign-in) and add it to a
-   `.env` at the vision-demos root:
+   `.env` at the [vision-demos](https://github.com/jeremyipark/vision-demos) root:
 
    ```bash
    cp ../.env.example ../.env

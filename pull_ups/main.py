@@ -210,7 +210,7 @@ def run_clip(api_key: str, profile) -> dict:
                           f"clears the bar ≥ {analysis.clearance_required:.2f} torso lengths "
                           f"[dim]({'calibration profile' if analysis.calibrated else 'this clip + config.py defaults'})[/]")
     else:
-        console.print("  [yellow]no reps detected[/]. Check timeline.png")
+        console.print("  [yellow]no reps detected[/]. Check plots.png")
     if analysis.off_bar_frames:
         console.print(f"  [dim]{analysis.off_bar_frames} frames excluded, hands off the bar[/]")
 
@@ -245,15 +245,15 @@ def run_clip(api_key: str, profile) -> dict:
     console.print(f"  video  -> [dim]{rel(out_video)}[/] "
                   f"({out_video.stat().st_size / 1e6:.1f} MB, {render_seconds:.1f}s)")
 
-    timeline = run_dir / "timeline.png"
+    plots = run_dir / "plots.png"
     pulls = [reps.rep_value(r, cfg.REP_METRIC) for r in analysis.reps]
     render.plot_timeline(
-        analysis, timeline, cfg=cfg,
+        analysis, plots, cfg=cfg,
         title=f"{analysis.count} reps"
               + (f", {np.mean(pulls):.2f}s mean pull" if pulls else "")
               + (f" · {full}/{graded} full range of motion" if graded else "")
               + f" · {reps.phase_label(cfg.REP_METRIC)}")
-    console.print(f"  graph  -> [dim]{rel(timeline)}[/]")
+    console.print(f"  graph  -> [dim]{rel(plots)}[/]")
 
     (run_dir / "summary.txt").write_text(reps.summary_text(
         analysis, video_seconds=info.duration, source=cfg.INPUT_VIDEO.name,

@@ -99,7 +99,7 @@ REP_MIN_FLEXION_FRACTION = 0.35
 # False counts every pull; range of motion is graded separately, below.
 REQUIRE_HEAD_ABOVE_HANDS = False
 
-# Which span the PULL column, the average and timeline.png all report.
+# Which span the PULL column, the average and plots.png all report.
 #   "moving": onset to peak, excluding any dead hang at the bottom
 #   "ascent": valley to peak, hang included
 #   "total":  valley to valley, the whole cycle

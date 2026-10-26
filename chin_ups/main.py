@@ -291,7 +291,7 @@ def main(argv: list[str] | None = None) -> int:
                                       f"[dim](panel reports: {cfg.REP_METRIC})[/]",
                                 title_align="left", expand=False))
         else:
-            console.print("  [yellow]no reps detected[/]. Check displacement.png")
+            console.print("  [yellow]no reps detected[/]. Check plots.png")
         if analysis.off_bar_frames:
             console.print(f"  [dim]{analysis.off_bar_frames} frames excluded, "
                           f"hands off the bar[/]")
@@ -314,7 +314,7 @@ def main(argv: list[str] | None = None) -> int:
 
     disp_path = None
     if analysis is not None:
-        disp_path = run_dir / "displacement.png"
+        disp_path = run_dir / "plots.png"
         # Same metric as the panel, or the two disagree about the same rep.
         mean = (f", {np.mean([reps.rep_value(r, cfg.REP_METRIC) for r in analysis.reps]):.2f}s mean"
                 if analysis.reps else "")

@@ -44,7 +44,7 @@ Catalog gives you access to 22 vision models.
 3. Copy your API key from the [main Overview dashboard](https://app.vlm.run/dashboard).
    The key is only shown once, when it's created, and then it's hidden, so copy
    it right away. You can also generate a new API key.
-4. Add your API key to a `.env` file at the vision-demos root. From the
+4. Add your API key to a `.env` file at the [vision-demos](https://github.com/jeremyipark/vision-demos) root. From the
    `rock_climbing` folder, run:
 
    ```bash
@@ -91,7 +91,7 @@ In short, to create the minimal reproducible example of my demo:
 
 ## Code instructions
 
-**tl;dr: clone the vision-demos repo, point Claude or another coding agent at the
+**tl;dr: clone the [vision-demos](https://github.com/jeremyipark/vision-demos) repo, point Claude or another coding agent at the
 repo, and describe how you want to update the project.**
 
 1. Add your trimmed video to the input folder:

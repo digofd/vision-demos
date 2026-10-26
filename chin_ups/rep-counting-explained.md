@@ -29,7 +29,7 @@ what it is: [`config.py`](config.py). Per-rep numbers land in `reps.json` and
   single crossing counts several times.
 - The peak also has to clear chin-over-bar, meaning the eyes above the hands,
   which is self-calibrating in a way an amplitude threshold is not.
-- `displacement.png` plots the curve and that margin, so you can see *why* each
+- `plots.png` plots the curve and that margin, so you can see *why* each
   rep counted.
 
 ## The timing

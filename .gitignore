@@ -20,6 +20,13 @@ venv/
 .ruff_cache/
 .mypy_cache/
 
+# ── Gradio ───────────────────────────────────────────────────────────────────
+# `app.py` writes its uploads and results into each project's own `data/`, which
+# that project already ignores. This is only Gradio's own scratch.
+.gradio/
+# Per-tab files when the app is hosted. The command line does not write here.
+data/sessions/
+
 # ── OS / editor ──────────────────────────────────────────────────────────────
 .DS_Store
 ._*

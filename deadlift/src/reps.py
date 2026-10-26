@@ -467,7 +467,7 @@ def summary_text(analysis: RepAnalysis, *, video_seconds: float, source: str,
     lines.append(f"{'cross-check':<22}plate {agreement['plate_reps']} reps, hinge "
                  f"{agreement['hinge_reps']}, {agreement['matched']} matched")
     if not analysis.reps:
-        lines.append("\nNo reps detected. Check timeline.png.")
+        lines.append("\nNo reps detected. Check plots.png.")
         return "\n".join(lines) + "\n"
     lifts = [r.lift_seconds for r in analysis.reps]
     if analysis.source == "plate":

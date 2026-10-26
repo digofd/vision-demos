@@ -58,7 +58,8 @@ One timestamped directory per run under `data/output/`:
 ```
 20260909-150354/
 ├── <clip>_pose.mp4     # H.264 overlay video + stats panel
-├── displacement.png    # the rep signal over time, every rep marked
+├── plots.png           # the rep signal over time, every rep marked, and a box
+│                       # plot of every rep's concentric time
 ├── reps.json           # per-rep timings + the full signal series
 ├── summary.txt         # the rep report, human-readable
 ├── metrics.txt         # performance, with metrics.json beside it

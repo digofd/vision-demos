@@ -119,7 +119,7 @@ def build(analysis, source: str) -> Profile:
     if any(s is None for s in stats):
         raise ValueError(
             "The reference clip did not yield usable angles at both ends of a "
-            "rep. Check timeline.png for that clip before trusting it."
+            "rep. Check plots.png for that clip before trusting it."
         )
 
     return Profile(

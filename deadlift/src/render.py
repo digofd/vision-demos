@@ -284,14 +284,30 @@ def plot_timeline(signal, reads, analysis, dst: Path, *, cfg) -> None:
     the others are shaded start to back down in the rep's verdict. The two rep
     signals share a time axis so they can be checked against each other: solid
     lines are the lockouts of the reps in use, dotted ones the other signal's.
+    Beside them, a box plot of every rep's lift time, floor to lockout.
     """
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
     t = np.arange(len(signal.per_frame)) / signal.fps
-    fig, (ax, axh, ax2) = plt.subplots(3, 1, figsize=(13, 11), sharex=True,
-                                       gridspec_kw={"height_ratios": [1.5, 1, 1]})
+    fig = plt.figure(figsize=(16, 11))
+    grid = fig.add_gridspec(3, 2, height_ratios=[1.5, 1, 1], width_ratios=[5, 1])
+    ax = fig.add_subplot(grid[0, 0])
+    axh = fig.add_subplot(grid[1, 0], sharex=ax)
+    ax2 = fig.add_subplot(grid[2, 0], sharex=ax)
+    for upper in (ax, axh):
+        upper.tick_params(labelbottom=False)
+
+    # Every counted rep reached lockout, so every one is a full rep; the back
+    # verdict is a separate question, and colors the points rather than
+    # dropping any.
+    _concentric_box(
+        fig.add_subplot(grid[:, 1]),
+        [r.lift_seconds for r in analysis.reps], [r.number for r in analysis.reps],
+        subtitle="every counted rep\nfloor to lockout",
+        colors=["#ff6b6b" if r.back_label == cfg.POSITIVE_LABEL else "#51cf66"
+                for r in analysis.reps])
     timed = ax if analysis.source == "plate" else axh
 
     for rep in analysis.reps:
@@ -361,3 +377,43 @@ def plot_timeline(signal, reads, analysis, dst: Path, *, cfg) -> None:
     fig.tight_layout()
     fig.savefig(dst, dpi=150)
     plt.close(fig)
+
+
+def _concentric_box(ax, values, numbers, *, subtitle: str, colors=None,
+                    empty: str = "no full reps") -> None:
+    """The concentric time of each full rep, as one box with every rep on it.
+
+    The points carry the rep numbers, because with a handful of reps the box
+    alone hides which rep was the slow one, and that is usually the question.
+    """
+    ax.set_title(f"Concentric time\n{subtitle}", fontsize=11, fontweight="bold", pad=10)
+    ax.grid(axis="y", alpha=0.25)
+    if not values:
+        ax.text(0.5, 0.5, empty, ha="center", va="center", transform=ax.transAxes,
+                color="#868e96", fontsize=10)
+        ax.set_yticks([])
+        ax.set_xticks([])
+        return
+
+    ax.boxplot([values], positions=[1], widths=0.5, showfliers=False,
+               patch_artist=True,
+               boxprops=dict(facecolor="#dbe4ff", edgecolor="#1864ab", lw=1.4),
+               medianprops=dict(color="#1864ab", lw=2.2),
+               whiskerprops=dict(color="#1864ab", lw=1.2),
+               capprops=dict(color="#1864ab", lw=1.2))
+    # Spread evenly across the box in rep order, not at random, so no two reps
+    # share a spot and a rerun draws the same figure.
+    n = len(values)
+    xs = list(np.linspace(0.8, 1.2, n)) if n > 1 else [1.0]
+    ax.scatter(xs, values, s=42, zorder=3, edgecolor="white", lw=0.8,
+               color=colors or ["#e8590c"] * n)
+    for x, y, num in zip(xs, values, numbers):
+        ax.annotate(str(num), (x, y), textcoords="offset points", xytext=(7, -3),
+                    fontsize=9, fontweight="bold", color="#495057")
+
+    ax.set_xticks([])        # after boxplot, which sets its own
+    ax.set_xlim(0.5, 1.5)
+    ax.set_ylim(0, max(values) * 1.25)
+    ax.set_ylabel("seconds")
+    ax.text(0.5, -0.04, f"n = {n} · median {float(np.median(values)):.2f}s",
+            ha="center", va="top", transform=ax.transAxes, fontsize=9.5, color="#495057")

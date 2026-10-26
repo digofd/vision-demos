@@ -1,0 +1,14 @@
+# One environment for every demo the app runs: `pip install -r requirements.txt`, then
+# `python app.py`. ffmpeg is a system dependency and is not installable here.
+# See the note in README.md about pip vs the per-project environment.yml.
+
+gradio==6.27.0                # pinned: the app uses Gradio 6 component APIs
+openai>=1.40                  # the gateway speaks the OpenAI API
+opencv-python-headless>=4.9   # headless: no libGL needed, and nothing here opens a window
+numpy>=1.26
+matplotlib>=3.8               # the plots, and the bundled DejaVu the overlays fall back to
+pillow>=10                    # TrueType text on the video frames
+rich>=13                      # the pipelines' own console output, which becomes the run log
+python-dotenv>=1.0
+scipy>=1.11                   # rock_climbing: mask cleanup, route spline, keypoint smoothing
+typesafe-sdk==0.7.0           # deadlift: the System One back-position reads

@@ -99,7 +99,8 @@ One timestamped directory per run under `data/output/`:
 ```
 20260929-134948/
 ├── <clip>_deadlift.mp4   # overlay + live panel
-├── timeline.png          # each rep's timed pull on bar height, hip angle, P(rounded)
+├── plots.png             # each rep's timed pull on bar height, hip angle, P(rounded),
+│                         # and a box plot of every rep's lift time
 ├── reps.json             # per-rep timings and verdicts
 ├── reads.json            # every System One read
 ├── summary.txt           # the rep report

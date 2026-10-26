@@ -1,0 +1,36 @@
+# conda env create -f environment.yml && conda activate vision-demos
+#
+# One environment for the browser app and every pipeline it runs. The per-project
+# environment.yml files still work and are still the right thing when you are
+# only touching one demo; this is the superset the app needs, since any tab can
+# be the next one you click.
+#
+# ffmpeg is pinned into the env rather than assumed on the system, for the same
+# reason it is in each project: the convert step is what guarantees the pixels
+# the model sees and the pixels OpenCV reads share an orientation and a frame
+# count, so it should not depend on whatever ffmpeg happens to be on PATH. The
+# conda-forge build also carries libplacebo, which is what tone-maps HDR clips
+# `requirements.txt` cannot provide either, which is the one real cost of the
+# pip route.
+#
+# HDR clips additionally need a Vulkan device for libplacebo to tone-map on. On
+# macOS that is `conda install -c conda-forge moltenvk`; elsewhere it is the
+# system's own driver. SDR clips need neither.
+name: vision-demos
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - ffmpeg
+  - py-opencv
+  - numpy
+  - matplotlib-base
+  - pillow
+  - rich
+  - python-dotenv
+  - scipy             # rock_climbing: mask cleanup, the route spline, keypoint smoothing
+  - pip
+  - pip:
+      - openai>=1.40
+      - gradio==6.27.0   # pinned: app.py uses Gradio 6 component APIs
+      - typesafe-sdk==0.7.0   # deadlift: the System One back-position reads

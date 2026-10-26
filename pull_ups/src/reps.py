@@ -370,7 +370,7 @@ def analyze(frames: list[dict], fps: float, n_source_frames: int, *, cfg,
     head_margin = hands - head
 
     # Elbow angle and head clearance per frame, sampled at each rep's turnaround.
-    # Computed even with GRADE_ROM off so timeline.png can plot them.
+    # Computed even with GRADE_ROM off so plots.png can plot them.
     arms = rom_mod.arm_angles(frames, aspect, cfg.ARM_JOINTS)
     elbow = rom_mod.elbow_angles(arms)
     torso_span = rom_mod.torso_lengths(frames, cfg.TORSO_JOINTS, cfg.HEAD_JOINTS)
@@ -504,7 +504,7 @@ def summary_text(analysis: RepAnalysis, *, video_seconds: float, source: str = "
                         else "config.py defaults (run calibrate.py)"))
 
     if not analysis.reps:
-        lines.append("\nNo reps detected. Check timeline.png.")
+        lines.append("\nNo reps detected. Check plots.png.")
         return "\n".join(lines) + "\n"
 
     s = analysis.summary()

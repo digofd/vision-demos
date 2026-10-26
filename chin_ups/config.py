@@ -62,7 +62,7 @@ REP_RESET_FRACTION = 0.30         # fall back under this to arm the next one
 REQUIRE_HEAD_ABOVE_HANDS = True   # gate each rep on chin-over-bar
 
 # ── The reported number ──────────────────────────────────────────────────────
-# Which span the panel and displacement.png both report.
+# Which span the panel and plots.png both report.
 #   "moving": onset to peak, excluding any dead hang at the bottom
 #   "ascent": valley to peak, hang included
 #   "total":  valley to valley, the whole cycle

@@ -384,7 +384,7 @@ def summary_text(analysis: RepAnalysis, *, video_seconds: float, source: str = "
     ]
 
     if not analysis.reps:
-        lines.append("\nNo reps detected. Check displacement.png.")
+        lines.append("\nNo reps detected. Check plots.png.")
         return "\n".join(lines) + "\n"
 
     s = analysis.summary()

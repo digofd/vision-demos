@@ -336,7 +336,7 @@ def run_clip(api_key: str) -> dict:
                                          f"[dim](off the {analysis.source})[/]",
                             title_align="left", expand=False))
     else:
-        console.print("  [yellow]no reps detected[/]. Check timeline.png")
+        console.print("  [yellow]no reps detected[/]. Check plots.png")
 
     # ── 8. Output ────────────────────────────────────────────────────────────
     rule(8, "Render")
@@ -379,9 +379,9 @@ def run_clip(api_key: str) -> dict:
     console.print(f"  video  -> [dim]{rel(out_video)}[/] "
                   f"({out_video.stat().st_size / 1e6:.1f} MB, {render_seconds:.1f}s)")
 
-    timeline = run_dir / "timeline.png"
-    render.plot_timeline(signal, read_list, analysis, timeline, cfg=cfg)
-    console.print(f"  graph  -> [dim]{rel(timeline)}[/]")
+    plots = run_dir / "plots.png"
+    render.plot_timeline(signal, read_list, analysis, plots, cfg=cfg)
+    console.print(f"  graph  -> [dim]{rel(plots)}[/]")
 
     summary = reps.summary_text(analysis, video_seconds=info.duration,
                                 source=cfg.INPUT_VIDEO.name, plate_cm=cfg.PLATE_DIAMETER_CM,

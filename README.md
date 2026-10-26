@@ -63,7 +63,16 @@ Real-world computer vision demos.
   <a href="https://www.youtube.com/watch?v=917J5oOvcBM">▶ Watch on YouTube</a>
 </p>
 
-Each project has its own README with setup and instructions.
+## Run
+
+Each project has its own README with setup and instructions. To try them in a browser instead:
+
+```bash
+conda env create -f environment.yml && conda activate vision-demos   # or: pip install -r requirements.txt
+python app.py                                                        # -> http://127.0.0.1:7860
+```
+
+Upload a clip, trim it, analyze. No API key needed (anonymous, rate-limited tier); paste a [VLM Run](https://app.vlm.run) key or set `VLMRUN_API_KEY` for higher limits. `rock_climbing_3d` isn't in the app (it needs a LiDAR capture). ffmpeg is required.
 
 ## License
 
